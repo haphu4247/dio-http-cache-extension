@@ -1,0 +1,21 @@
+name: dio_http_cache_extension_example
+description: A demo of the dio_http_cache_extension package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=2.15.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio_http_cache_extension:
+    path: ../
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
