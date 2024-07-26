@@ -29,17 +29,17 @@ class DioHelper {
   }
 
   // set proxy
-  static HttpClientAdapter _getHttpClientAdapter() {
-    final httpClientAdapter = HttpClientAdapter();
-    // httpClientAdapter.onHttpClientCreate = (HttpClient client) {
-    //   client.findProxy = (uri) {
-    //     return 'PROXY 10.0.0.103:6152';
-    //   };
-    //   client.badCertificateCallback =
-    //       (X509Certificate cert, String host, int port) {
-    //     return true;
-    //   };
-    // };
-    return httpClientAdapter;
-  }
+  // static HttpClientAdapter _getHttpClientAdapter() {
+  //   final httpClientAdapter = HttpClientAdapter();
+  //   // httpClientAdapter.onHttpClientCreate = (HttpClient client) {
+  //   //   client.findProxy = (uri) {
+  //   //     return 'PROXY 10.0.0.103:6152';
+  //   //   };
+  //   //   client.badCertificateCallback =
+  //   //       (X509Certificate cert, String host, int port) {
+  //   //     return true;
+  //   //   };
+  //   // };
+  //   return httpClientAdapter;
+  // }
 }

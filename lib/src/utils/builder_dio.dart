@@ -46,7 +46,7 @@ Options buildConfigurableCacheOptions(
     options.extra = {};
   } else if (options.responseType == ResponseType.stream) {
     throw Exception("ResponseType.stream is not supported");
-  } 
+  }
   options.extra ??= {};
   options.extra!.addAll({DioCacheKey.tryCache.name: true});
   if (null != maxAge) {

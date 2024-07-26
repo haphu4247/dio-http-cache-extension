@@ -47,8 +47,6 @@ abstract class HttpCacheManager {
 
   String? get _baseUrl => _localCache.setting.baseUrl;
 
-  Future<bool> _pushToCache(Response<dynamic> response);
-
   String _getRequestMethod(String? requestMethod) {
     if (null != requestMethod && requestMethod.isNotEmpty) {
       return requestMethod.toUpperCase();

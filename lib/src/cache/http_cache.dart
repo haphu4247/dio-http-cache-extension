@@ -1,5 +1,3 @@
-import 'package:dio_http_cache_extension/src/models/http_cache_obj.dart';
-
 import '../../dio_http_cache_extension.dart';
 
 abstract class IHttpCache {

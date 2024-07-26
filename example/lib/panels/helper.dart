@@ -99,7 +99,7 @@ class PanelHelper {
           text: '$v\n\n',
           style: Theme.of(context)
               .textTheme
-              .bodyText2!
+              .bodyMedium!
               .copyWith(color: Theme.of(context).disabledColor)));
     });
     return widgets;

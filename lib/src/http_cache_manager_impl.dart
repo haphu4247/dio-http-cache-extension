@@ -63,7 +63,6 @@ class HttpCacheManagerImpl extends HttpCacheManager {
     );
   }
 
-  @override
   Future<bool> _pushToCache(Response<dynamic> response) {
     final RequestOptions options = response.requestOptions;
     var maxAge = options.extra[DioCacheKey.maxAge.name] as Duration?;
