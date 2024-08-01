@@ -85,7 +85,7 @@ dependencies:
 
    * Just ignore it, that is automatic.
 
-   * But if you insist : `DioCacheManager.clearExpired();`
+   * But if you insist : `_dioCacheManager.clearExpired();`
 
 5. **How to delete caches**
 
