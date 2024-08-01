@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio_http_cache_extension/src/utils/cache_encryption.dart';
 import 'package:dio_http_cache_extension/src/const/http_table_column_key.dart';
 
@@ -8,10 +10,10 @@ class HttpCacheObj {
   int? maxStaleDate;
   int? statusCode;
 
-  dynamic content;
+  Object? content;
   List<int>? headers;
 
-  factory HttpCacheObj(String key, dynamic content,
+  factory HttpCacheObj(String key, Object? content,
       {String? subKey = '',
       Duration? maxAge,
       Duration? maxStale,
@@ -71,7 +73,7 @@ class HttpCacheObj {
       ..maxStaleDate = json['max_stale_date'] as int?;
   }
 
-  Future<void> setEncryption(CacheEncryption<dynamic> _encryption) async {
+  Future<void> setEncryption(CacheEncryption<Object?> _encryption) async {
     if (content != null) {
       content = await _encryption.encryptCacheStr(content);
     }
@@ -83,14 +85,26 @@ class HttpCacheObj {
     }
   }
 
-  Map<String, dynamic> get toHttpTable {
+  Future<void> setDecryption(CacheEncryption<Object?> _encryption) async {
+    if (content != null) {
+      content = await _encryption.decryptCacheStr(content);
+    }
+    if (headers != null) {
+      final result = await _encryption.decryptCacheStr(headers);
+      if (result is List<int>) {
+        headers = result;
+      }
+    }
+  }
+
+  Map<String, Object?> get toHttpTable {
     return {
       HttpTableColumnKey.key.name: key,
       HttpTableColumnKey.subKey.name: '$subKey',
       HttpTableColumnKey.maxAgeDate.name: maxAgeDate ?? 0,
       HttpTableColumnKey.maxStaleDate.name: maxStaleDate ?? 0,
       HttpTableColumnKey.statusCode.name: statusCode,
-      HttpTableColumnKey.content.name: content,
+      HttpTableColumnKey.content.name: jsonEncode(content),
       HttpTableColumnKey.headers.name: headers
     };
   }

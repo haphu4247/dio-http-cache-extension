@@ -48,21 +48,22 @@ Options buildConfigurableCacheOptions(
     throw Exception("ResponseType.stream is not supported");
   }
   options.extra ??= {};
-  options.extra!.addAll({DioCacheKey.tryCache.name: true});
+  options.extra!.putIfAbsent(DioCacheKey.tryCache.name, () => true);
   if (null != maxAge) {
-    options.extra!.addAll({DioCacheKey.maxAge.name: maxAge});
+    options.extra!.putIfAbsent(DioCacheKey.maxAge.name, () => maxAge);
   }
   if (null != maxStale) {
-    options.extra!.addAll({DioCacheKey.maxStale.name: maxStale});
+    options.extra!.putIfAbsent(DioCacheKey.maxStale.name, () => maxStale);
   }
   if (null != primaryKey) {
-    options.extra!.addAll({DioCacheKey.primaryKey.name: primaryKey});
+    options.extra!.putIfAbsent(DioCacheKey.primaryKey.name, () => primaryKey);
   }
   if (null != subKey) {
-    options.extra!.addAll({DioCacheKey.subKey.name: subKey});
+    options.extra!.putIfAbsent(DioCacheKey.subKey.name, () => subKey);
   }
   if (null != forceRefresh) {
-    options.extra!.addAll({DioCacheKey.forceRefresh.name: forceRefresh});
+    options.extra!
+        .putIfAbsent(DioCacheKey.forceRefresh.name, () => forceRefresh);
   }
   return options;
 }

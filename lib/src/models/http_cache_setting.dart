@@ -1,3 +1,6 @@
+import 'package:dio/dio.dart';
+import 'package:dio_http_cache_extension/dio_http_cache_extension.dart';
+
 class HttpCacheSetting {
   final Duration defaultMaxAge;
   final Duration? defaultMaxStale;
@@ -11,7 +14,7 @@ class HttpCacheSetting {
 
   final int maxMemoryCacheCount;
 
-  HttpCacheSetting({
+  const HttpCacheSetting({
     this.defaultMaxAge = const Duration(days: 7),
     this.defaultMaxStale,
     this.defaultRequestMethod = 'POST',
@@ -22,4 +25,19 @@ class HttpCacheSetting {
     this.skipMemoryCache = false,
     this.maxMemoryCacheCount = 100,
   });
+
+  Options get option {
+    return buildCacheOptions(
+      defaultMaxAge,
+      maxStale: defaultMaxStale,
+    );
+  }
+
+  Options fromOption(Options other) {
+    return buildConfigurableCacheOptions(
+      options: other,
+      maxAge: defaultMaxAge,
+      maxStale: defaultMaxStale,
+    );
+  }
 }

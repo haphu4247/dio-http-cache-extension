@@ -1,7 +1,7 @@
 part of 'http_cache_manager.dart';
 
-class HttpCacheManagerImpl extends HttpCacheManager {
-  HttpCacheManagerImpl(IHttpLocalCacheRepository localCache)
+class _HttpCacheManagerImpl extends HttpCacheManager {
+  _HttpCacheManagerImpl(IHttpLocalCacheRepository localCache)
       : super._(localCache);
   InterceptorsWrapper? _interceptor;
 
@@ -165,7 +165,7 @@ class HttpCacheManagerImpl extends HttpCacheManager {
     }
     // add flag
     headers.add(DioCacheKey.headerKeyDataSource.name, 'from_cache');
-    dynamic data = obj.content;
+    Object? data = obj.content;
     if (options.responseType != ResponseType.bytes) {
       if (data is List<int>) {
         data = jsonDecode(utf8.decode(data));

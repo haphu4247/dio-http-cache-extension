@@ -31,13 +31,13 @@ abstract class HttpCacheManager {
               setting.maxMemoryCacheCount,
             ),
     );
-    return HttpCacheManagerImpl(localCache);
+    return _HttpCacheManagerImpl(localCache);
   }
 
   factory HttpCacheManager.custom(
     IHttpLocalCacheRepository customCache,
   ) {
-    return HttpCacheManagerImpl(customCache);
+    return _HttpCacheManagerImpl(customCache);
   }
 
   const HttpCacheManager._(this._localCache);
