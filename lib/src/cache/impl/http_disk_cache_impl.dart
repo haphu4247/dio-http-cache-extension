@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio_http_cache_extension/src/const/http_table_column_key.dart';
+import 'package:dio_http_cache_extension/src/utils/cache_utils.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -113,11 +114,21 @@ class HttpDiskCacheImpl extends IHttpCache {
     if (null != subKey) {
       where += ' and ${HttpTableColumnKey.subKey.name}="$subKey"';
     }
-    final resultList = await db.query(_tableCacheObject, where: where);
+    final resultList =
+        await db.query(_tableCacheObject, where: where, limit: 1);
     if (resultList.isEmpty) {
       return null;
     }
-    return _decryptCacheObj(HttpCacheObj.fromJson(resultList[0]));
+    return _parseObj(resultList.first);
+  }
+
+  Future<HttpCacheObj> _parseObj(Map<String, Object?> json) async {
+    var _content = CacheUtils.parseDataFromBlob(json['content']);
+    _content = await cacheEncryption.decryptCacheResponse(_content);
+    return HttpCacheObj.fromDatabase(
+      json: json,
+      content: _content,
+    );
   }
 
   @override
@@ -126,11 +137,11 @@ class HttpDiskCacheImpl extends IHttpCache {
     if (null == db) {
       return false;
     }
-
-    await obj.setEncryption(cacheEncryption);
-    await db.insert(_tableCacheObject, obj.toHttpTable,
+    final values = await HttpTableColumnKey.mappingObj(
+        obj: obj, encryption: cacheEncryption);
+    final result = await db.insert(_tableCacheObject, values,
         conflictAlgorithm: ConflictAlgorithm.replace);
-    return true;
+    return result != 0;
   }
 
   @override

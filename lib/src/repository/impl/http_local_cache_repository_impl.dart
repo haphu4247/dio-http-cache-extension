@@ -1,6 +1,6 @@
 import 'package:dio_http_cache_extension/src/models/http_cache_obj.dart';
 import 'package:dio_http_cache_extension/src/repository/http_local_cache_repository.dart';
-import 'package:dio_http_cache_extension/src/utils/encrypt_helper.dart';
+import 'package:dio_http_cache_extension/src/utils/cache_utils.dart';
 
 class HttpLocalCacheRepositoryImpl extends IHttpLocalCacheRepository {
   const HttpLocalCacheRepositoryImpl({
@@ -27,9 +27,9 @@ class HttpLocalCacheRepositoryImpl extends IHttpLocalCacheRepository {
 
   @override
   Future<bool> delete(String key, {String? subKey}) {
-    final _key = EncryptHelper.convertToMd5(key);
+    final _key = CacheUtils.convertToMd5(key);
     if (null != subKey) {
-      subKey = EncryptHelper.convertToMd5(subKey);
+      subKey = CacheUtils.convertToMd5(subKey);
     }
 
     return _getCacheFutureResult([
@@ -40,9 +40,9 @@ class HttpLocalCacheRepositoryImpl extends IHttpLocalCacheRepository {
 
   @override
   Future<HttpCacheObj?> pullFromCache(String key, {String? subKey}) async {
-    final _key = EncryptHelper.convertToMd5(key);
+    final _key = CacheUtils.convertToMd5(key);
     if (null != subKey) {
-      subKey = EncryptHelper.convertToMd5(subKey);
+      subKey = CacheUtils.convertToMd5(subKey);
     }
     //get obj from Memory
     var obj = await memoryCache?.getCacheObj(_key, subKey: subKey);
@@ -92,9 +92,9 @@ class HttpLocalCacheRepositoryImpl extends IHttpLocalCacheRepository {
 
   @override
   Future<bool> pushToCache(HttpCacheObj obj) {
-    obj.key = EncryptHelper.convertToMd5(obj.key);
+    obj.key = CacheUtils.convertToMd5(obj.key);
     if (null != obj.subKey) {
-      obj.subKey = EncryptHelper.convertToMd5(obj.subKey!);
+      obj.subKey = CacheUtils.convertToMd5(obj.subKey!);
     }
 
     if (null == obj.maxAgeDate || obj.maxAgeDate! <= 0) {

@@ -64,7 +64,7 @@ class _HttpCacheManagerImpl extends HttpCacheManager {
   }
 
   Future<bool> _pushToCache(Response<dynamic> response) {
-    final RequestOptions options = response.requestOptions;
+    final options = response.requestOptions;
     var maxAge = options.extra[DioCacheKey.maxAge.name] as Duration?;
     var maxStale = options.extra[DioCacheKey.maxStale.name] as Duration?;
     if (null == maxAge) {
@@ -80,7 +80,7 @@ class _HttpCacheManagerImpl extends HttpCacheManager {
       maxAge: maxAge,
       maxStale: maxStale,
       statusCode: response.statusCode,
-      headers: utf8.encode(jsonEncode(response.headers.map)),
+      headers: response.headers,
     );
     return _localCache.pushToCache(obj);
   }
@@ -147,32 +147,15 @@ class _HttpCacheManagerImpl extends HttpCacheManager {
 
   Response<dynamic> _buildResponse(
       HttpCacheObj obj, int? statusCode, RequestOptions options) {
-    Headers? headers;
-    final _bytes = obj.headers;
-    if (null != _bytes) {
-      final _parsedBytes = jsonDecode(utf8.decode(_bytes)) as Map?;
-      if (_parsedBytes != null) {
-        headers = Headers.fromMap(
-          Map<String, List<dynamic>>.from(_parsedBytes).map(
-            (k, v) => MapEntry(k, List<String>.from(v)),
-          ),
-        );
-      }
-    }
+    Headers? headers = obj.headers;
     if (null == headers) {
       headers = Headers();
       options.headers.forEach((k, v) => headers!.add(k, '$v'));
     }
     // add flag
     headers.add(DioCacheKey.headerKeyDataSource.name, 'from_cache');
-    Object? data = obj.content;
-    if (options.responseType != ResponseType.bytes) {
-      if (data is List<int>) {
-        data = jsonDecode(utf8.decode(data));
-      }
-    }
     return Response(
-        data: data,
+        data: obj.content,
         headers: headers,
         requestOptions: options.copyWith(
             extra: options.extra..remove(DioCacheKey.tryCache.name)),

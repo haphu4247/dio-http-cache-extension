@@ -7,17 +7,17 @@ class CacheEncryption<T> {
   final Future<T> Function(T data)? _encrypt;
   final Future<T> Function(T data)? _decrypt;
 
-  Future<T> encryptCacheStr(T bytes) async {
+  Future<dynamic> encryptCacheResponse(T data) async {
     if (_encrypt != null) {
-      return _encrypt!(bytes);
+      return _encrypt!(data);
     }
-    return bytes;
+    return data;
   }
 
-  Future<T> decryptCacheStr(T bytes) async {
-    if (_decrypt == null) {
-      return _decrypt!(bytes);
+  Future<dynamic> decryptCacheResponse(T data) async {
+    if (_decrypt != null) {
+      return _decrypt!(data);
     }
-    return bytes;
+    return data;
   }
 }
