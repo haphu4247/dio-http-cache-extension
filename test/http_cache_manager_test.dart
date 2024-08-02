@@ -6,24 +6,36 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 const String baseUrl = 'https://jsonplaceholder.typicode.com';
 void main() {
   setupDB();
-
+  ///test Database cache.
   final setting = HttpCacheSetting(
     baseUrl: baseUrl,
     defaultMaxAge: Duration(days: 3),
     defaultMaxStale: Duration(days: 5),
+    skipMemoryCache: true,
   );
   final cacheManager = HttpCacheManager(setting: setting);
   final dio = setup(cacheManager);
   test('/users/2', () async {
+    await cacheManager.clearAll();
     final dataFromInternet = await dio.get(
       '/users/2',
       options: setting.option,
     );
 
+    ;
+    expect(
+        dataFromInternet.headers.map
+            .containsKey(DioCacheKey.headerKeyDataSource.name),
+        false);
     final dataFromCache = await dio.get(
       '/users/2',
       options: setting.option,
     );
+    expect(
+        dataFromCache.headers.map
+            .containsKey(DioCacheKey.headerKeyDataSource.name),
+        true);
+
     expect(dataFromInternet.data, dataFromCache.data);
   });
 }
