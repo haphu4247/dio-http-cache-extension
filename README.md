@@ -167,8 +167,7 @@ _dio.post(
 ```dart
 flutter test --coverage
 ```
-2. install lcov for macOS
-Note: skip this step if you have already installed lcov.
+2. install lcov for macOS(skip this step if you have already installed lcov)
 ```dart
 brew install lcov
 ```
