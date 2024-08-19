@@ -176,7 +176,7 @@ brew install lcov
 genhtml coverage/lcov.info -o coverage/html
 ```
 
-4. Open the report: `index.html`
+4. Open the report: `coverage/html/index.html`
 ```dart
 open coverage/html/index.html
 ```
