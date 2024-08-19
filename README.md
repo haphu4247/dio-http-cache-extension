@@ -99,24 +99,13 @@ dependencies:
    2. Delete local cache when both primaryKey and subKey matched.
 
       ```dart
-      // delete local cache when both primaryKey and subKey matched.
-      _dioCacheManager.deleteByPrimaryKeyAndSubKey(path, requestMethod: "GET"); 
-      ```
-
-      **INPORTANT:** If you have additional parameters when requesting the http interface, you must take them with it, for example:
-
-      ```dart
-      _dio.get(_url, queryParameters: {'k': keyword}, 
-      	options: buildCacheOptions(Duration(hours: 1)))
-      //delete the cache:
-      _dioCacheManager.deleteByPrimaryKeyAndSubKey(_url, requestMethod: "GET", queryParameters:{'k': keyword}); 
+      // delete local cache by #path and #requestMethod
+      _dioCacheManager.deleteByPath(path, requestMethod: "GET"); 
       ```
 
       ```dart
-      _dio.post(_url, data: {'k': keyword}, 
-      	options: buildCacheOptions(Duration(hours: 1)))
-      //delete the cache:
-      _dioCacheManager.deleteByPrimaryKeyAndSubKey(_url, requestMethod: "POST", data:{'k': keyword}); 
+      // delete local cache by #RequestOptions
+      _dioCacheManager.deleteByRequestOptions(requestOptions); 
       ```
 
    3. Delete local cache by primaryKey and optional subKey if you know your primarykey and subkey exactly.
