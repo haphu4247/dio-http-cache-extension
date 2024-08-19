@@ -135,7 +135,7 @@ dependencies:
 7. **How to know if the data come from Cache**
 
    ```dart
-   if (null != response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE)) {
+   if (null != response.headers.value(DioCacheKey.headerKeyDataSource)) {
 		// data come from cache
    } else {
 		// data come from net
