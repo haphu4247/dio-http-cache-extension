@@ -141,17 +141,6 @@ dependencies:
 		// data come from net
    }
    ```
-### Unit Test
-1. Generate `coverage/lcov.info` file
-flutter test --coverage
-2. Generate HTML report
-```dart
-// Note: on macOS you need to have lcov installed on your system (`brew install lcov`) to use this:
-```
-genhtml coverage/lcov.info -o coverage/html
-3. Open the report
-open coverage/html/index.html
-
 
 ###  Example for maxAge and maxStale
 
@@ -173,6 +162,21 @@ _dio.post(
    3. If getting data from network fails or no network avaliable, **try** get data from cache instead of an error.
 3. 7 ~ ∞ days: It won't use cache anymore, and the cache will be deleted at the right time.
 
+### Unit Test
+1. Generate `coverage/lcov.info` file
+```dart
+flutter test --coverage
+```
+2. Generate HTML report
+`Note: on macOS you need to have lcov installed on your system (`brew install lcov`) to use this:`
+```dart
+genhtml coverage/lcov.info -o coverage/html
+```
+
+3. Open the report
+```dart
+open coverage/html/index.html
+```
 ### License
 
    ```
