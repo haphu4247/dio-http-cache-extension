@@ -167,7 +167,7 @@ _dio.post(
 ```dart
 flutter test --coverage
 ```
-2. install lcov for macOS(skip this step if you have already installed lcov)
+2. install `lcov` for macOS(skip this step if you have already installed `lcov`)
 ```dart
 brew install lcov
 ```
@@ -176,7 +176,7 @@ brew install lcov
 genhtml coverage/lcov.info -o coverage/html
 ```
 
-4. Open the report
+4. Open the report: `index.html`
 ```dart
 open coverage/html/index.html
 ```
