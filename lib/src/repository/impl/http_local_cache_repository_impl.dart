@@ -92,11 +92,6 @@ class HttpLocalCacheRepositoryImpl extends IHttpLocalCacheRepository {
 
   @override
   Future<bool> pushToCache(HttpCacheObj obj) {
-    obj.key = CacheUtils.convertToMd5(obj.key);
-    if (null != obj.subKey) {
-      obj.subKey = CacheUtils.convertToMd5(obj.subKey!);
-    }
-
     if (null == obj.maxAgeDate || obj.maxAgeDate! <= 0) {
       obj.maxAge = setting.defaultMaxAge;
     }
@@ -107,7 +102,8 @@ class HttpLocalCacheRepositoryImpl extends IHttpLocalCacheRepository {
         null != setting.defaultMaxStale) {
       obj.maxStale = setting.defaultMaxStale;
     }
-
+    
+    obj.toMD5();
     return _getCacheFutureResult([
       memoryCache?.setCacheObj(obj),
       dbCache?.setCacheObj(obj),

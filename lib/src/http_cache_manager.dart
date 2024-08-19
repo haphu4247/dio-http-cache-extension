@@ -54,13 +54,8 @@ abstract class HttpCacheManager {
     return _localCache.setting.defaultRequestMethod.toUpperCase();
   }
 
-  String _getPrimaryKeyFromUri(Uri uri) => '${uri.host}${uri.path}';
-
-  String _getSubKeyFromUri(Uri uri, {dynamic data}) =>
-      '${data?.toString()}_${uri.query}';
-
-  RequestOptions _getUriByPath(String? baseUrl, String path,
-      {dynamic data, Map<String, dynamic>? queryParameters}) {
+  RequestOptions _getRequestOptionByPath(String? baseUrl, String path,
+      {dynamic data, Map<String, dynamic>? queryParameters, String? requestMethod}) {
     if (!path.startsWith('http')) {
       assert(baseUrl != null && baseUrl.isNotEmpty);
     }
@@ -68,24 +63,16 @@ abstract class HttpCacheManager {
         baseUrl: baseUrl,
         path: path,
         data: data,
+        method: requestMethod,
         queryParameters: queryParameters);
   }
 
   Future<bool> delete(String primaryKey,
       {String? requestMethod, String? subKey});
 
-  Future<bool> deleteByPrimaryKeyWithUri(Uri uri, {String? requestMethod});
+  Future<bool> deleteByPath(String path, {String? requestMethod});
 
-  Future<bool> deleteByPrimaryKey(String path, {String? requestMethod});
-
-  Future<bool> deleteByPrimaryKeyAndSubKeyWithUri(Uri uri,
-      {String? requestMethod, String? subKey, dynamic data});
-
-  Future<bool> deleteByPrimaryKeyAndSubKey(String path,
-      {String? requestMethod,
-      Map<String, dynamic>? queryParameters,
-      String? subKey,
-      dynamic data});
+  Future<bool> deleteByRequestOptions(RequestOptions requestOptions);
 
   Future<bool> clearExpired();
 

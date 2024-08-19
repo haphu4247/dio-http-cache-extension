@@ -22,6 +22,8 @@ enum HttpTableColumnKey {
     final _encryptedContent =
         await encryption.encryptCacheResponse(obj.content);
     final _convertContentToBlob = CacheUtils.convertToBlob(_encryptedContent);
+    print('mappingObj key: ${obj.key}');
+    print('mappingObj subKey: ${obj.subKey}');
     return {
       key.name: obj.key,
       subKey.name: '${obj.subKey}',

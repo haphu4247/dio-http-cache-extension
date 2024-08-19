@@ -77,15 +77,15 @@ class _CacheManagerPanelState extends State<CacheManagerPanel> {
       DioHelper.getCacheManager().clearAll().then(resultPrinter);
     } else if (_mode == _Mode.clearByKey) {
       DioHelper.getCacheManager()
-          .deleteByPrimaryKey(_keyController.text,
+          .deleteByPath(_keyController.text,
               requestMethod: _requestMethodController.text)
           .then(resultPrinter);
     } else if (_mode == _Mode.clearByKeyAndSubKey) {
-      DioHelper.getCacheManager()
-          .deleteByPrimaryKeyAndSubKey(_keyController.text,
-              requestMethod: _requestMethodController.text,
-              subKey: _subKeyController.text)
-          .then(resultPrinter);
+      // DioHelper.getCacheManager()
+      //     .deleteByPrimaryKeyAndSubKey(_keyController.text,
+      //         requestMethod: _requestMethodController.text,
+      //         subKey: _subKeyController.text)
+      //     .then(resultPrinter);
     }
   }
 

@@ -39,6 +39,14 @@ class HttpCacheObj {
     this.headers,
   });
 
+  //convert #key & #subKey to MD5
+  void toMD5() {
+    key = CacheUtils.convertToMd5(key);
+    if (null != subKey) {
+      subKey = CacheUtils.convertToMd5(subKey!);
+    }
+  }
+
   set maxAge(Duration? duration) {
     if (null != duration) {
       maxAgeDate = CacheUtils.convertDuration(duration);

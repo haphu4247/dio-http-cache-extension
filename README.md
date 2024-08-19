@@ -141,6 +141,16 @@ dependencies:
 		// data come from net
    }
    ```
+### Unit Test
+1. Generate `coverage/lcov.info` file
+flutter test --coverage
+2. Generate HTML report
+```dart
+// Note: on macOS you need to have lcov installed on your system (`brew install lcov`) to use this:
+```
+genhtml coverage/lcov.info -o coverage/html
+3. Open the report
+open coverage/html/index.html
 
 
 ###  Example for maxAge and maxStale

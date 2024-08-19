@@ -176,36 +176,14 @@ class _HttpCacheManagerImpl extends HttpCacheManager {
   }
 
   @override
-  Future<bool> deleteByPrimaryKey(String path, {String? requestMethod}) {
-    return deleteByPrimaryKeyWithUri(_getUriByPath(_baseUrl, path).uri,
-        requestMethod: requestMethod);
+  Future<bool> deleteByPath(String path, {String? requestMethod}) {
+    return deleteByRequestOptions(
+        _getRequestOptionByPath(_baseUrl, path, requestMethod: requestMethod));
   }
 
   @override
-  Future<bool> deleteByPrimaryKeyAndSubKeyWithUri(Uri uri,
-      {String? requestMethod, String? subKey, data}) {
-    return delete(_getPrimaryKeyFromUri(uri),
-        requestMethod: requestMethod,
-        subKey: subKey ?? _getSubKeyFromUri(uri, data: data));
-  }
-
-  @override
-  Future<bool> deleteByPrimaryKeyWithUri(Uri uri, {String? requestMethod}) {
-    return delete(_getPrimaryKeyFromUri(uri), requestMethod: requestMethod);
-  }
-
-  @override
-  Future<bool> deleteByPrimaryKeyAndSubKey(String path,
-      {String? requestMethod,
-      Map<String, dynamic>? queryParameters,
-      String? subKey,
-      data}) {
-    return deleteByPrimaryKeyAndSubKeyWithUri(
-        _getUriByPath(_baseUrl, path,
-                data: data, queryParameters: queryParameters)
-            .uri,
-        requestMethod: requestMethod,
-        subKey: subKey,
-        data: data);
+  Future<bool> deleteByRequestOptions(RequestOptions requestOptions) {
+    return _localCache.delete(requestOptions.primaryKey,
+        subKey: requestOptions.subKey);
   }
 }

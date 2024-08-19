@@ -5,3 +5,4 @@
 .flutter-plugins
 .flutter-plugins-dependencies
 example/.flutter-plugins-dependencies
+/coverage/html

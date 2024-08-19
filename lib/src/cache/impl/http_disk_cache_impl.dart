@@ -154,7 +154,11 @@ class HttpDiskCacheImpl extends IHttpCache {
     if (null != subKey) {
       where += ' and ${HttpTableColumnKey.subKey.name}="$subKey"';
     }
-    return 0 != await db.delete(_tableCacheObject, where: where);
+    print('delete key: $key');
+    print('delete subKey: $subKey');
+    //#result ==> number of row is deleted
+    final resultRow = await db.delete(_tableCacheObject, where: where);
+    return resultRow > 0;
   }
 
   @override
