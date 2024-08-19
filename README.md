@@ -168,7 +168,11 @@ _dio.post(
 flutter test --coverage
 ```
 2. Generate HTML report
-`Note: on macOS you need to have lcov installed on your system (`brew install lcov`) to use this:`
+Note: on macOS you need to have lcov installed on your system.
+```dart
+brew install lcov
+```
+then Generate HTML file.
 ```dart
 genhtml coverage/lcov.info -o coverage/html
 ```
