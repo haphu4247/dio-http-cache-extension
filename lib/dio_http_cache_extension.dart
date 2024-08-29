@@ -6,4 +6,3 @@ export 'src/models/http_cache_obj.dart';
 export 'src/models/http_cache_setting.dart';
 export 'src/repository/http_local_cache_repository.dart';
 export 'src/utils/builder_dio.dart';
-export 'src/utils/cache_encryption.dart';

@@ -1,9 +1,7 @@
 import '../../dio_http_cache_extension.dart';
 
 abstract class IHttpCache {
-  const IHttpCache(this.cacheEncryption);
-
-  final CacheEncryption<dynamic> cacheEncryption;
+  const IHttpCache();
 
   Future<HttpCacheObj?> getCacheObj(String key, {String? subKey});
 

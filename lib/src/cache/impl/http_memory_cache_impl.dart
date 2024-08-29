@@ -9,7 +9,7 @@ class HttpMemoryCacheImpl extends IHttpCache {
   late MapCache<String, HttpCacheObj> _mapCache;
   late Map<String, List<String>> _keys;
 
-  HttpMemoryCacheImpl(super.cacheEncryption, this._maxMemoryCacheCount) {
+  HttpMemoryCacheImpl(this._maxMemoryCacheCount) {
     _initMap();
   }
 

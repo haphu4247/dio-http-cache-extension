@@ -12,7 +12,7 @@ void main() {
     baseUrl: baseUrl,
     defaultMaxAge: Duration(days: 3),
     defaultMaxStale: Duration(days: 5),
-    // skipMemoryCache: false,
+    skipMemoryCache: true,
   );
 
   final cacheManager = HttpCacheManager(

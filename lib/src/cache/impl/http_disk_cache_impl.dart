@@ -9,8 +9,7 @@ import '../http_cache.dart';
 import '../../models/http_cache_obj.dart';
 
 class HttpDiskCacheImpl extends IHttpCache {
-  HttpDiskCacheImpl(
-    super.cacheEncryption, {
+  HttpDiskCacheImpl({
     this.databasePath,
     required this.databaseName,
   });
@@ -30,11 +29,13 @@ class HttpDiskCacheImpl extends IHttpCache {
       }
       await Directory(path).create(recursive: true);
       path = join(path, '$databaseName.db');
-      _db = await openDatabase(path,
-          version: _curDBVersion,
-          onConfigure: (db) => _tryFixDbNoVersionBug(db, path!),
-          onCreate: _onCreate,
-          onUpgrade: _onUpgrade);
+      _db = await openDatabase(
+        path,
+        version: _curDBVersion,
+        onConfigure: (db) => _tryFixDbNoVersionBug(db, path!),
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+      );
       await _clearExpired(_db);
     }
     return _db;
@@ -52,21 +53,11 @@ class HttpDiskCacheImpl extends IHttpCache {
     }
   }
 
-  String _getCreateTableSql() => '''
-      CREATE TABLE IF NOT EXISTS $_tableCacheObject ( 
-        ${HttpTableColumnKey.key.name} text, 
-        ${HttpTableColumnKey.subKey.name} text, 
-        ${HttpTableColumnKey.maxAgeDate.name} integer,
-        ${HttpTableColumnKey.maxStaleDate.name} integer,
-        ${HttpTableColumnKey.content.name} BLOB,
-        ${HttpTableColumnKey.statusCode.name} integer,
-        ${HttpTableColumnKey.headers.name} BLOB,
-        PRIMARY KEY (${HttpTableColumnKey.key.name}, ${HttpTableColumnKey.subKey.name})
-        ) 
-      ''';
+  String get _createTableSql =>
+      HttpTableColumnKey.createTableSql(_tableCacheObject);
 
   Future<void> _onCreate(Database db, int version) {
-    return db.execute(_getCreateTableSql());
+    return db.execute(_createTableSql);
   }
 
   List<List<String>?> _dbUpgradeList() => [
@@ -77,7 +68,7 @@ class HttpDiskCacheImpl extends IHttpCache {
           'ALTER TABLE $_tableCacheObject ADD COLUMN ${HttpTableColumnKey.statusCode.name} integer;'
         ],
         // 2 -> 3 : Change $_columnContent from text to BLOB
-        ['DROP TABLE IF EXISTS $_tableCacheObject;', _getCreateTableSql()],
+        ['DROP TABLE IF EXISTS $_tableCacheObject;', _createTableSql],
       ];
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -124,7 +115,7 @@ class HttpDiskCacheImpl extends IHttpCache {
 
   Future<HttpCacheObj> _parseObj(Map<String, Object?> json) async {
     var _content = CacheUtils.parseDataFromBlob(json['content']);
-    _content = await cacheEncryption.decryptCacheResponse(_content);
+    // _content = await cacheEncryption.decryptCacheResponse(_content);
     return HttpCacheObj.fromDatabase(
       json: json,
       content: _content,
@@ -137,8 +128,7 @@ class HttpDiskCacheImpl extends IHttpCache {
     if (null == db) {
       return false;
     }
-    final values = await HttpTableColumnKey.mappingObj(
-        obj: obj, encryption: cacheEncryption);
+    final values = await HttpTableColumnKey.mappingObj(obj: obj);
     final result = await db.insert(_tableCacheObject, values,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return result != 0;
@@ -187,11 +177,5 @@ class HttpDiskCacheImpl extends IHttpCache {
       return false;
     }
     return 0 != await db.delete(_tableCacheObject);
-  }
-
-  Future<HttpCacheObj> _decryptCacheObj(HttpCacheObj obj) async {
-    // obj.content = await obj.decryptContent();
-    // obj.headers = await obj.decryptHeaders();
-    return obj;
   }
 }

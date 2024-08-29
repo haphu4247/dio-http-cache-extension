@@ -32,8 +32,12 @@ class CacheUtils {
   static Object? parseDataFromBlob(dynamic blob) {
     if (blob is List) {
       final _bytes = blob.map((e) => e as int).toList();
-      final _jsonString = utf8.decode(_bytes);
-      return jsonDecode(_jsonString);
+      try {
+        final _jsonString = utf8.decode(_bytes);
+        return jsonDecode(_jsonString);
+      } catch (e) {
+        return blob;
+      }
     }
     return blob;
   }

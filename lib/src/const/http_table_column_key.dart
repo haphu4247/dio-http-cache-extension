@@ -15,13 +15,9 @@ enum HttpTableColumnKey {
 
   static Future<Map<String, Object?>> mappingObj({
     required HttpCacheObj obj,
-    required CacheEncryption<Object?> encryption,
   }) async {
     final _convertHeadersToBlob = CacheUtils.convertToBlob(obj.headers?.map);
-
-    final _encryptedContent =
-        await encryption.encryptCacheResponse(obj.content);
-    final _convertContentToBlob = CacheUtils.convertToBlob(_encryptedContent);
+    final _convertContentToBlob = CacheUtils.convertToBlob(obj.content);
     print('mappingObj key: ${obj.key}');
     print('mappingObj subKey: ${obj.subKey}');
     return {
@@ -34,4 +30,17 @@ enum HttpTableColumnKey {
       headers.name: _convertHeadersToBlob
     };
   }
+
+  static String createTableSql(String name) => '''
+      CREATE TABLE IF NOT EXISTS $name ( 
+        ${key.name} text, 
+        ${subKey.name} text, 
+        ${maxAgeDate.name} integer,
+        ${maxStaleDate.name} integer,
+        ${content.name} BLOB,
+        ${statusCode.name} integer,
+        ${headers.name} BLOB,
+        PRIMARY KEY (${key.name}, ${subKey.name})
+        ) 
+      ''';
 }

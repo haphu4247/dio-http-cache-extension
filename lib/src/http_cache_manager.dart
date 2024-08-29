@@ -13,21 +13,18 @@ part 'http_cache_manager_impl.dart';
 abstract class HttpCacheManager {
   factory HttpCacheManager({
     required HttpCacheSetting setting,
-    CacheEncryption<dynamic> cacheEncryption = const CacheEncryption<dynamic>(),
   }) {
     final localCache = HttpLocalCacheRepositoryImpl(
       setting: setting,
       dbCache: setting.skipDbCache
           ? null
           : HttpDiskCacheImpl(
-              cacheEncryption,
               databasePath: setting.databasePath,
               databaseName: setting.databaseName,
             ),
       memoryCache: setting.skipMemoryCache
           ? null
           : HttpMemoryCacheImpl(
-              cacheEncryption,
               setting.maxMemoryCacheCount,
             ),
     );
@@ -55,7 +52,9 @@ abstract class HttpCacheManager {
   }
 
   RequestOptions _getRequestOptionByPath(String? baseUrl, String path,
-      {dynamic data, Map<String, dynamic>? queryParameters, String? requestMethod}) {
+      {dynamic data,
+      Map<String, dynamic>? queryParameters,
+      String? requestMethod}) {
     if (!path.startsWith('http')) {
       assert(baseUrl != null && baseUrl.isNotEmpty);
     }
